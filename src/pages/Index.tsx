@@ -1,3 +1,4 @@
+import { useState } from "react";
 import MenuColumn from "@/components/MenuColumn";
 
 const dummyData = {
@@ -48,12 +49,55 @@ const dummyData = {
 };
 
 const Index = () => {
+  const [selections, setSelections] = useState<Record<string, string>>({});
+
+  const handleItemClick = (level: string, item: string) => {
+    setSelections(prev => {
+      const levelNum = parseInt(level.split('-')[1]);
+      const newSelections = { ...prev };
+      
+      // Set the selection for current level
+      newSelections[level] = item;
+      
+      // Clear all subsequent levels
+      Object.keys(newSelections).forEach(key => {
+        if (parseInt(key.split('-')[1]) > levelNum) {
+          delete newSelections[key];
+        }
+      });
+      
+      return newSelections;
+    });
+    
+    console.log(`Selected ${item} at level ${level}`);
+  };
+
+  // Function to determine which columns to show
+  const getVisibleColumns = () => {
+    const columns: [string, string[]][] = [];
+    const levels = Object.keys(dummyData).sort();
+    
+    levels.forEach((level, index) => {
+      if (index === 0 || selections[levels[index - 1]]) {
+        columns.push([level, dummyData[level as keyof typeof dummyData]]);
+      }
+    });
+    
+    return columns;
+  };
+
   return (
     <div className="min-h-screen bg-menuBg">
       <div className="container mx-auto py-8">
         <div className="flex overflow-x-auto">
-          {Object.entries(dummyData).map(([title, items]) => (
-            <MenuColumn key={title} title={title} items={items} />
+          {getVisibleColumns().map(([level, items]) => (
+            <MenuColumn
+              key={level}
+              title={level}
+              items={items}
+              selectedItem={selections[level]}
+              onItemClick={(item) => handleItemClick(level, item)}
+            />
           ))}
         </div>
       </div>

@@ -4,16 +4,28 @@ interface MenuItemProps {
   text: string;
   hasArrow?: boolean;
   isAddButton?: boolean;
+  onClick?: () => void;
+  isSelected?: boolean;
 }
 
-const MenuItem = ({ text, hasArrow = true, isAddButton = false }: MenuItemProps) => {
+const MenuItem = ({ 
+  text, 
+  hasArrow = true, 
+  isAddButton = false,
+  onClick,
+  isSelected = false
+}: MenuItemProps) => {
   return (
     <div 
+      onClick={onClick}
       className={`
         flex items-center justify-between p-2 mb-2 rounded
         ${isAddButton 
           ? 'border border-menuGreen text-menuGreen hover:bg-menuGreen hover:text-white' 
-          : 'bg-menuGreen text-white hover:bg-menuHover'
+          : `${isSelected 
+              ? 'bg-menuHover text-white'
+              : 'bg-menuGreen text-white hover:bg-menuHover'
+            }`
         }
         cursor-pointer transition-colors duration-200
       `}
