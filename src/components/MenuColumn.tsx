@@ -9,8 +9,8 @@ interface MenuColumnProps {
 
 const MenuColumn = ({ title, items, onItemClick, selectedItem }: MenuColumnProps) => {
   return (
-    <div className="w-64 p-4 border-r border-gray-700">
-      <h2 className="text-lg font-semibold mb-4 text-white">{title}</h2>
+    <div className="w-64 p-4 border-r border-gray-700 dark:border-gray-600">
+      <h2 className="text-lg font-semibold mb-4 text-menuText-light dark:text-menuText-dark">{title}</h2>
       <div className="space-y-2">
         {items.map((item) => (
           <MenuItem 

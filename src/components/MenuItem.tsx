@@ -21,7 +21,7 @@ const MenuItem = ({
       className={`
         flex items-center justify-between p-2 mb-2 rounded
         ${isAddButton 
-          ? 'border border-menuGreen text-menuGreen hover:bg-menuGreen hover:text-white' 
+          ? 'border border-menuGreen text-menuGreen hover:bg-menuGreen hover:text-white dark:text-menuGreen dark:hover:text-white' 
           : `${isSelected 
               ? 'bg-menuHover text-white'
               : 'bg-menuGreen text-white hover:bg-menuHover'

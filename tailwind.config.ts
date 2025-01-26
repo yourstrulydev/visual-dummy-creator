@@ -21,7 +21,14 @@ export default {
       colors: {
         menuGreen: "#00B894",
         menuHover: "#00A885",
-        menuBg: "#2D3436",
+        menuBg: {
+          light: "#FFFFFF",
+          dark: "#2D3436"
+        },
+        menuText: {
+          light: "#1A202C",
+          dark: "#FFFFFF"
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
