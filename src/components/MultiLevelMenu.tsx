@@ -11,7 +11,7 @@ const MultiLevelMenu = ({ data }: MultiLevelMenuProps) => {
 
   const handleItemClick = (level: string, item: string) => {
     setSelections(prev => {
-      const levelNum = parseInt(level.split('-')[1]);
+      const levelNum = parseInt(level.slice(1));
       const newSelections = { ...prev };
       
       // Set the selection for current level
@@ -19,7 +19,7 @@ const MultiLevelMenu = ({ data }: MultiLevelMenuProps) => {
       
       // Clear all subsequent levels
       Object.keys(newSelections).forEach(key => {
-        if (parseInt(key.split('-')[1]) > levelNum) {
+        if (parseInt(key.slice(1)) > levelNum) {
           delete newSelections[key];
         }
       });
@@ -30,17 +30,41 @@ const MultiLevelMenu = ({ data }: MultiLevelMenuProps) => {
     console.log(`Selected ${item} at level ${level}`);
   };
 
+  const getM2Items = () => {
+    if (!selections.M1) return [];
+    const m2Item = data.M2.find(item => selections.M1 in item);
+    return m2Item ? m2Item[selections.M1] : [];
+  };
+
+  const getM5Items = () => {
+    if (!selections.M4) return [];
+    const m5Item = data.M5.find(item => item.M4 === selections.M4);
+    return m5Item ? m5Item.M5_Details : [];
+  };
+
   // Function to determine which columns to show
   const getVisibleColumns = () => {
-    const columns: [string, string[]][] = [];
-    const levels = Object.keys(data).sort();
-    
-    levels.forEach((level, index) => {
-      if (index === 0 || selections[levels[index - 1]]) {
-        columns.push([level, data[level as keyof typeof data]]);
-      }
-    });
-    
+    const columns: [string, string[]][] = [
+      ["M0", data.M0],
+      ["M1", data.M1]
+    ];
+
+    if (selections.M1) {
+      columns.push(["M2", getM2Items()]);
+    }
+
+    if (selections.M2) {
+      columns.push(["M3", data.M3]);
+    }
+
+    if (selections.M3) {
+      columns.push(["M4", data.M4]);
+    }
+
+    if (selections.M4) {
+      columns.push(["M5", getM5Items()]);
+    }
+
     return columns;
   };
 
